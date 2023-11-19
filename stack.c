@@ -4,6 +4,17 @@
 #include <stdlib.h> 
 #include <string.h> 
 
+int countWordsInFileStack(const char* filename) {
+    FILE* file = fopen(filename, "r");
+    int count = 0;
+    char word[10000];
+    while (fscanf(file, "%s", word) != EOF) {
+        count++;
+    }
+    fclose(file);
+    return count;
+}
+
 Stack* initStack() {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     stack->top = NULL;
@@ -75,19 +86,21 @@ Stack* loadFromFileStack(const char* filename, const char* basename, int* pos1, 
     if (file == NULL) {
         return NULL;
     }
+    int num_lines = countWordsInFileStack(filename);
+    char** line = malloc(num_lines * sizeof(char*));
+    for (int i = 0; i < num_lines; i++) line[i] = malloc(10000 * sizeof(char));
     Stack* stack = initStack();
-    char line[1000][1000];
     int tempory = 0;
     int pos3 = 0;
     int temp1 = 0;
     int temp2 = 0;
     char c = '1';
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < num_lines; ++i) {
         fscanf(file, "%s", line[i]);
         c = getc(file);
         pos3 = ftell(file);
         if (!strcmp(line[i], basename)) {
-            fseek(file,  -3 - strlen(line[i]), SEEK_CUR);
+            fseek(file, -3 - strlen(line[i]), SEEK_CUR);
             if (getc(file) == '\n' || i == 0) {
                 fseek(file, pos3, SEEK_SET);
                 tempory = 1;
@@ -113,5 +126,9 @@ Stack* loadFromFileStack(const char* filename, const char* basename, int* pos1, 
         temp1++;
     }
     fclose(file);
+    for (int i = 0; i < num_lines; i++) {
+        free(line[i]);
+    }
+    free(line);
     return stack;
 }

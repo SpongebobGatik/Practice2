@@ -24,8 +24,8 @@ void SREM(Set* set, char* element);
 
 int SISMEMBER(Set* set, char* element);
 
-void saveToFileSet(Set* set, const char* filename, const char* basename, int *pos1, int *pos2, int *status);
+void saveToFileSet(Set* set, const char* filename, const char* basename, int* pos1, int* pos2, int* status);
 
-Set* loadFromFileSet(const char* filename, const char* basename, int *pos1, int *pos2, int *status);
+Set* loadFromFileSet(const char* filename, const char* basename, int* pos1, int* pos2, int* status);
 
 #endif

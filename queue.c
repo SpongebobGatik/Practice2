@@ -4,6 +4,17 @@
 #include <stdlib.h> 
 #include <string.h> 
 
+int countWordsInFileQueue(const char* filename) {
+    FILE* file = fopen(filename, "r");
+    int count = 0;
+    char word[10000];
+    while (fscanf(file, "%s", word) != EOF) {
+        count++;
+    }
+    fclose(file);
+    return count;
+}
+
 Queue* initQueue() {
     Queue* queue = (Queue*)malloc(sizeof(Queue));
     queue->front = NULL;
@@ -79,14 +90,16 @@ Queue* loadFromFileQueue(const char* filename, const char* basename, int* pos1, 
     if (file == NULL) {
         return NULL;
     }
+    int num_lines = countWordsInFileQueue(filename);
+    char** line = malloc(num_lines * sizeof(char*));
+    for (int i = 0; i < num_lines; i++) line[i] = malloc(10000 * sizeof(char));
     Queue* queue = initQueue();
-    char line[1000][1000];
     int tempory = 0;
     int pos3 = 0;
     int temp1 = 0;
     int temp2 = 0;
     char c = '1';
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < num_lines; ++i) {
         fscanf(file, "%s", line[i]);
         c = getc(file);
         pos3 = ftell(file);
@@ -117,5 +130,9 @@ Queue* loadFromFileQueue(const char* filename, const char* basename, int* pos1, 
         temp1++;
     }
     fclose(file);
+    for (int i = 0; i < num_lines; i++) {
+        free(line[i]);
+    }
+    free(line);
     return queue;
 }

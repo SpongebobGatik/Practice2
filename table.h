@@ -13,7 +13,6 @@ typedef struct HashTable {
     int size;
     NodeHashTable** hashTable;
     int tableSize;
-    int* emptySlots;
     char** keys;
 } HashTable;
 
@@ -25,8 +24,8 @@ void HDEL(HashTable* hashtable, char* key);
 
 char* HGET(HashTable* hashtable, char* key);
 
-void saveToFileTable(HashTable* hashtable, const char* filename, const char* basename, int *pos1, int *pos2, int *status);
+void saveToFileTable(HashTable* hashtable, const char* filename, const char* basename, int* pos1, int* pos2, int* status);
 
-HashTable* loadFromFileTable(const char* filename, const char* basename, int *pos1, int *pos2, int *status);
+HashTable* loadFromFileTable(const char* filename, const char* basename, int* pos1, int* pos2, int* status);
 
 #endif

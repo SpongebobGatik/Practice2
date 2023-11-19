@@ -3,7 +3,18 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <string.h> 
-#define MAX_SIZE 1000 
+#define MAX_SIZE 100000 
+
+int countWordsInFileSet(const char* filename) {
+    FILE* file = fopen(filename, "r");
+    int count = 0;
+    char word[10000];
+    while (fscanf(file, "%s", word) != EOF) {
+        count++;
+    }
+    fclose(file);
+    return count;
+}
 
 Set* initSet() {
     Set* set = (Set*)malloc(sizeof(Set));
@@ -24,11 +35,11 @@ int calculateHashS(const char* element) {
     for (int i = 0; element[i] != '\0'; i++) {
         hash = 31 * hash + element[i];
     }
-    return hash % MAX_SIZE;
+    return abs(hash) % MAX_SIZE;
 }
 
 void SADD(Set* set, char* element) {
-    int hash = calculateHashS(element) % set->tableSize;
+    int hash = calculateHashS(element);
     if (set->hashTable[hash] != NULL) {
         return;
     }
@@ -45,7 +56,7 @@ void SADD(Set* set, char* element) {
 }
 
 void SREM(Set* set, const char* element) {
-    int hash = calculateHashS(element) % set->tableSize;
+    int hash = calculateHashS(element);
     if (set->hashTable[hash] != NULL && strcmp(set->hashTable[hash]->element, element) == 0) {
         Node* nodeToRemove = set->hashTable[hash];
         if (nodeToRemove == set->head) {
@@ -68,7 +79,7 @@ void SREM(Set* set, const char* element) {
 }
 
 int SISMEMBER(Set* set, const char* element) {
-    int hash = calculateHashS(element) % set->tableSize;
+    int hash = calculateHashS(element);
     if (set->hashTable[hash] != NULL && strcmp(set->hashTable[hash]->element, element) == 0) {
         return 1;
     }
@@ -123,14 +134,16 @@ Set* loadFromFileSet(const char* filename, const char* basename, int* pos1, int*
     if (file == NULL) {
         return NULL;
     }
+    int num_lines = countWordsInFileSet(filename);
+    char** line = malloc(num_lines * sizeof(char*));
+    for (int i = 0; i < num_lines; i++) line[i] = malloc(10000 * sizeof(char));
     Set* set = initSet();
-    char line[1000][1000];
     int tempory = 0;
     int pos3 = 0;
     int temp1 = 0;
     int temp2 = 0;
     char c = '1';
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < num_lines; ++i) {
         fscanf(file, "%s", line[i]);
         c = getc(file);
         pos3 = ftell(file);
@@ -161,5 +174,9 @@ Set* loadFromFileSet(const char* filename, const char* basename, int* pos1, int*
         temp1++;
     }
     fclose(file);
+    for (int i = 0; i < num_lines; i++) {
+        free(line[i]);
+    }
+    free(line);
     return set;
 }
