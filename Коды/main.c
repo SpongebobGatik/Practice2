@@ -354,8 +354,8 @@ DWORD WINAPI handle_client(LPVOID lpParam) {
                 }
                 else {
                     if (HGET(hashtable, key) != NULL) {
-                        result = malloc(strlen(HGET(hashtable, key)) + 15);
-                        sprintf(result, "%s\n", HGET(hashtable, key));
+                        result = malloc(100);
+                        sprintf(result, "-> True\n");
                     }
                     else {
                         result = malloc(100);

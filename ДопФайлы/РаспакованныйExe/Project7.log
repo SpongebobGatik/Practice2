@@ -1,0 +1,4 @@
+﻿  main.c
+C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\main.c(378,50): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\main.c(385): warning C4716: handle_client: должна возвращать значение
+  Project7.vcxproj -> C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\x64\Debug\Project7.exe
