@@ -145,8 +145,8 @@ void saveToFileSet(Set* set, const char* filename, const char* basename, int* po
     free(set);
     fclose(file);
     fclose(tempFile);
-    remove("2.data");
-    rename("temp.data", "2.data");
+    remove(filename);
+    rename("temp.data", filename);
 }
 
 Set* loadFromFileSet(const char* filename, const char* basename, int* pos1, int* pos2, int* status) {
