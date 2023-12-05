@@ -36,6 +36,9 @@ int main() {
             buffer[bytes_received] = '\0'; // Добавление символа конца строки
             printf("Response from server: %s", buffer); // Вывод ответа от сервера
         }
+        else {
+            break;
+        }
     }
     free(buffer);
     closesocket(client_socket);

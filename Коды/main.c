@@ -16,8 +16,6 @@
 
 HANDLE mutex; // Объявление мьютекса
 DWORD WINAPI handle_client(LPVOID lpParam); // Объявление функции обработки клиента
-// Функция удаления символов новой строки \n
-void removeNewline(char* str);
 
 int main() {
     WSADATA wsa_data;
@@ -47,7 +45,14 @@ DWORD WINAPI handle_client(LPVOID lpParam) {
     int bytes_received;
     // Получение данных от клиента, пока клиент не закроет подключение
     while ((bytes_received = recv(client_socket, buffer, BUFFER_SIZE, 0)) > 0) {
-        buffer[bytes_received] = '\0';
+        buffer[bytes_received] = '\0'; // Добавление нуль-терминатора
+        // Удаление символов возврата каретки и новой строки
+        for (int i = 0; i < bytes_received; ++i) {
+            if (buffer[i] == '\r' || buffer[i] == '\n') {
+                buffer[i] = '\0';
+                break;
+            }
+        }
         char** argv = NULL;
         int argc = 0;
         char* token = strtok(buffer, " "); // Разбиение полученных данных на токены
@@ -90,13 +95,9 @@ DWORD WINAPI handle_client(LPVOID lpParam) {
                         sprintf(result, "Error.\n");
                         goto skip;
                     }
-                    removeNewline(key);
-                    removeNewline(item);
                 }
-                if (key != NULL) removeNewline(key);
             }
         }
-        removeNewline(basename);
         int pos1 = 0; // Переменная, отвечающая за позицию начала строки.
         int pos2 = 0; // Переменная, отвечающая за позицию конца строки.
         int status = 0; // Переменная-переключатель.
@@ -395,11 +396,4 @@ DWORD WINAPI handle_client(LPVOID lpParam) {
     free(buffer);
     closesocket(client_socket); // Закрытие сокета клиента
     ReleaseMutex(mutex); // Освобождение мьютекса
-}
-
-void removeNewline(char* str) {
-    if (str != NULL) {
-        size_t length = strcspn(str, "\n");
-        str[length] = '\0';
-    }
 }
