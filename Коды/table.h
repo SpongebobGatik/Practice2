@@ -4,17 +4,13 @@
 typedef struct NodeHashTable {
     char* key;
     char* element;
-    int hash;
     struct NodeHashTable* next;
     struct NodeHashTable* prev;
 } NodeHashTable;
 
 typedef struct HashTable {
-    NodeHashTable* head;
-    int size;
-    NodeHashTable** hashTable;
-    int tableSize;
-    char** keys;
+    NodeHashTable** nodes;
+    int count;
 } HashTable;
 
 HashTable* initHashTable();

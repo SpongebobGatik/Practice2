@@ -1,5 +1,4 @@
-﻿  table.c
-C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\table.c(78,39): warning C4028: формальный параметр 2 отличается от объявления
-C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\table.c(92,38): warning C4028: формальный параметр 2 отличается от объявления
-C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\table.c(183,12): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+﻿  main.c
+C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\main.c(391,54): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\main.c(399): warning C4716: handle_client: должна возвращать значение
   Project7.vcxproj -> C:\Users\Ms_Hlopets\Desktop\ПР2\Project7\x64\Debug\Project7.exe
